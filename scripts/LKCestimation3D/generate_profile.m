@@ -20,7 +20,7 @@ path_main       = '/home/drtea/matlabToolboxes/HPE/';
 path_RFTtoolbox = '/home/drtea/matlabToolboxes/RFTtoolbox/';
 path_spm12      = '/home/drtea/matlabToolboxes/spm12/';
 
-%------ related paths and save them
+%------ derived paths and save them
 path_pics    = fullfile( path_main, 'pics', 'LKCestimation3D' );
 path_data    = fullfile( path_main, 'data', 'LKCestimation3D' );
 path_results = fullfile( path_main, 'results', 'LKCestimation3D' );
@@ -31,7 +31,7 @@ save( fullfile( path_main, 'scripts',   'LKCestimation3D', 'paths.mat' ),...
                            'path_data', 'path_results',...
                            'path_RFTtoolbox', 'path_spm12' )
 
-%------ change to main directory and produce necessary folder substructure
+%------ produce necessary folder substructure
 cd( path_main )
 mkdir 'pics'
 mkdir 'data'
@@ -48,4 +48,5 @@ cd ..
                      
 %------ precompute random fields for speed up
 cd( fullfile( path_main, 'scripts', 'LKCestimation3D' ) )
+% runtime for 4e3, 50^3-dim fields for FWHM [3 6 12 15] approx. 45min
 run( 'Precompute_RandomFields3D.m' );

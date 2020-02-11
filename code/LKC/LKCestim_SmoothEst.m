@@ -56,12 +56,12 @@ for i = 1:sY(4)
     m2(1:(x)    , 2:(y + 1), 2:(z + 1)) = mask;
     m3 = (m1 + m2) == 2;
     if method == "Forman"        
-      x_v0 = mean((b1.*m1).^2,'all');
-      x_v1 = mean(((b1 - b2).* m3).^2,'all');
+      x_v0 = mean((b1(:).*m1(:)).^2);
+      x_v1 = mean(((b1(:) - b2(:)).* m3(:)).^2);
       xx = -(voxdim(1)^2) / (4 * log(1 - x_v1 / (2 * x_v0)));
     end
     if method == "Friston"
-      xx = mean(((b1 - b2).*m3).^2,'all') / (voxdim(1)^2);
+      xx = mean(((b1(:) - b2(:)).*m3(:)).^2) / (voxdim(1)^2);
     end
     
     b1 = zeros(dim+2);
@@ -75,12 +75,12 @@ for i = 1:sY(4)
     m2(2:(x + 1), 1:(y)    , 2:(z + 1)) = mask;
     m3 = (m1 + m2) == 2;
     if method == "Forman"        
-      y_v0 = mean((b1.*m1).^2,'all');
-      y_v1 = mean(((b1 - b2).* m3).^2,'all');
+      y_v0 = mean((b1(:).*m1(:)).^2);
+      y_v1 = mean(((b1(:) - b2(:)).* m3(:)).^2);
       yy = -(voxdim(2)^2) / (4 * log(1 - y_v1 / (2 * y_v0)));
     end
     if method == "Friston"
-      yy = mean(((b1 - b2).*m3).^2,'all') / (voxdim(2)^2);
+      yy = mean(((b1(:) - b2(:)).*m3(:)).^2) / (voxdim(2)^2);
     end
     
     b1 = zeros(dim+2);
@@ -94,12 +94,12 @@ for i = 1:sY(4)
     m2(2:(x + 1), 2:(y + 1), 1:(z)) = mask;
     m3 = (m1 + m2) == 2;
     if method == "Forman"        
-      z_v0 = mean((b1.*m1).^2,'all');
-      z_v1 = mean(((b1 - b2).* m3).^2,'all');
+      z_v0 = mean((b1(:).*m1(:)).^2);
+      z_v1 = mean(((b1(:) - b2(:)).* m3(:)).^2);
       zz = -(voxdim(3)^2) / (4 * log(1 - z_v1 / (2 * z_v0)));
     end
     if method == "Friston"
-      zz = mean(((b1 - b2).*m3).^2,'all') / (voxdim(3)^2);
+      zz = mean(((b1(:) - b2(:)).*m3(:)).^2) / (voxdim(3)^2);
     end
     
     if method == "Forman" 

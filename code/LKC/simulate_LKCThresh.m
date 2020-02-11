@@ -9,11 +9,7 @@ function [LKC_est,thr_est] = simulate_LKCThresh( Y, method, Nsubj, Msim,...
 %           Especially, it is assumed that the field has empirical mean 0.
 %   method (structure array):
 %           'name' contains the name of the method
-%           'param1',...'paramN' are some parameters of the method
-%   method_params (:
-%           containing the parameters for the method        
-%   D (integer):
-%           dimension of the domain
+%           'param1',...'paramN' are some parameters of the method   
 %   Nsubj (integer):
 %           number of subject
 %   Msim (integer):
@@ -56,9 +52,12 @@ if strcmp( name, 'HPE' )
             % get random indices to construct a sample
             index = randsample( 1:N, Nsubj(nsubj) );
             % estimate the LKC and threshold from the sample
-                tmp = LKCestim_HermProjExact( Y( indexD{:}, index ),...
-                                        D, mask, 1, [-1 1], 1, "C" );
-                LKC_est(:,nsubj,m)  = tmp.hatn;
+            tmp = LKCestim_HermProjExact( Y( indexD{:}, index ),...
+                                    D, mask, 1, 1, "C" );
+            LKC_est(:,nsubj,m)  = tmp.hatn;
+            % compute estimate of the FWER threshold
+            thr_est(nsubj,m) = get_EECthreshold( FWER, uvals,...
+                                         LKC_est(:, nsubj, m) );
         end
     end
 elseif strcmp( name, 'bHPE' )
@@ -68,9 +67,12 @@ elseif strcmp( name, 'bHPE' )
             % get random indices to construct a sample
             index = randsample( 1:N, Nsubj(nsubj) );
             % estimate the LKC and threshold from the sample
-                tmp = LKCestim_HermProjExact( Y( indexD{:}, index ),...
-                                        D, mask, method.Mboot, [-1 1], 1, "C" );
-                LKC_est(:,nsubj,m)  = tmp.hatn;
+            tmp = LKCestim_HermProjExact( Y( indexD{:}, index ),...
+                                    D, mask, method.Mboot, 1, "C" );
+            LKC_est(:,nsubj,m)  = tmp.hatn;
+            % compute estimate of the FWER threshold
+            thr_est(nsubj,m) = get_EECthreshold( FWER, uvals,...
+                                         LKC_est(:, nsubj, m) );
         end
     end
 elseif strcmp( name, 'spm' )
@@ -80,8 +82,11 @@ elseif strcmp( name, 'spm' )
             % get random indices to construct a sample
             index = randsample( 1:N, Nsubj(nsubj) );
             % estimate the LKC and threshold from the sample
-                LKC_est(:,nsubj,m)  = LKCestim_spm( char(Y.data( index )), Nsubj(nsubj),...
-                                                    Y.path_mask, 0, 0 );
+            LKC_est(:,nsubj,m)  = LKCestim_spm( char(Y.data( index )), Nsubj(nsubj),...
+                                                Y.path_mask, 0, 0 );
+            % compute estimate of the FWER threshold
+            thr_est(nsubj,m) = get_EECthreshold( FWER, uvals,...
+                                         LKC_est(:, nsubj, m) );
         end
     end
 elseif strcmp(name,'Friston') || strcmp(name,'Forman')
@@ -91,14 +96,14 @@ elseif strcmp(name,'Friston') || strcmp(name,'Forman')
             % get random indices to construct a sample
             index = randsample( 1:N, Nsubj(nsubj) );
             % estimate the LKC and threshold from the sample
-                LKC_est(:,nsubj,m) = LKCestim_SmoothEst( Y( indexD{:}, index ),...
-                                                        D, mask, ones([1 D]), name);
+            LKC_est(:,nsubj,m) = LKCestim_SmoothEst( Y( indexD{:}, index ),...
+                                                    D, mask, ones([1 D]), name);
+            % compute estimate of the FWER threshold
+            thr_est(nsubj,m) = get_EECthreshold( FWER, uvals,...
+                                         LKC_est(:, nsubj, m) ); 
         end
     end
 else
         error('The method is not supported with this function.')
 end
-    % compute estimate of the FWER threshold
-    thr_est(nsubj,m)  = get_EECthreshold( FWER, uvals,...
-                                    LKC_est(:, nsubj, m) );
 end

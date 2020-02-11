@@ -37,3 +37,10 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+# data files
+.mat
+
+# picture folder
+pics/
+results/

@@ -23,9 +23,11 @@ function [u_FWER, u_FWER_se] = get_EECthreshold( FWER, uvals, LKC, LKC0,...
 if nargin < 4
     LKC0   = 1;
     type = "gaussian";
+    se   = struct();
 end
 if nargin < 5
     type = "gaussian";
+    se   = struct();
 end
 
 if strcmp(type, "gaussian")

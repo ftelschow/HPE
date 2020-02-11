@@ -23,11 +23,12 @@ path_spm12      = '/home/drtea/matlabToolboxes/spm12/';
 %------ derived paths and save them
 path_pics    = fullfile( path_main, 'pics', 'LKCestimation3D' );
 path_data    = fullfile( path_main, 'data', 'LKCestimation3D' );
+path_tmp     = fullfile( path_data, 'tmp' );
 path_results = fullfile( path_main, 'results', 'LKCestimation3D' );
 
 % save the path identifiers
 save( fullfile( path_main, 'scripts',   'LKCestimation3D', 'paths.mat' ),...
-                           'path_main', 'path_pics', ...
+                           'path_main', 'path_pics', 'path_tmp',...
                            'path_data', 'path_results',...
                            'path_RFTtoolbox', 'path_spm12' )
 
@@ -41,6 +42,9 @@ mkdir 'LKCestimation3D'
 cd ..
 cd data
 mkdir 'LKCestimation3D'
+cd LKCestimation3D
+mkdir tmp
+cd ..
 cd ..
 cd results
 mkdir 'LKCestimation3D'

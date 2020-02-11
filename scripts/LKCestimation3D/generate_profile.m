@@ -10,11 +10,12 @@
 %--------------------------------------------------------------------------
 %   Author: Fabian Telschow
 %--------------------------------------------------------------------------
+%------ prepare workspace
 % clear workspace
 clear all
 close all
 
-%------ change accordingly to your folder structure
+%------ change accordingly to your local folder structure
 path_main       = '/home/drtea/matlabToolboxes/HPE/';
 path_RFTtoolbox = '/home/drtea/matlabToolboxes/RFTtoolbox/';
 path_spm12      = '/home/drtea/matlabToolboxes/spm12/';
@@ -25,10 +26,10 @@ path_data    = fullfile( path_main, 'data', 'LKCestimation3D' );
 path_results = fullfile( path_main, 'results', 'LKCestimation3D' );
 
 % save the path identifiers
-save( strcat( path_main, '/scripts/LKCestimation3D/paths.mat' ),...
-                         'path_main', 'path_pics', ...
-                         'path_data', 'path_results',...
-                         'path_RFTtoolbox', 'path_spm12' )
+save( fullfile( path_main, 'scripts',   'LKCestimation3D', 'paths.mat' ),...
+                           'path_main', 'path_pics', ...
+                           'path_data', 'path_results',...
+                           'path_RFTtoolbox', 'path_spm12' )
 
 %------ change to main directory and produce necessary folder substructure
 cd( path_main )
@@ -46,5 +47,5 @@ mkdir 'LKCestimation3D'
 cd ..
                      
 %------ precompute random fields for speed up
-cd( strcat( path_main, 'scripts/LKCestimation3D/' ) )
+cd( fullfile( path_main, 'scripts', 'LKCestimation3D' ) )
 run( 'Precompute_RandomFields3D.m' );

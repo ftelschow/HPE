@@ -9,6 +9,7 @@ function [] = Simulate_LKCestim3D_isotropic( Msim , methods, identifier )
 %              thresholds in 3D for isotropic random fields
 %              For Msim = 1e3 methods = ["spm12", "HPE", "Forman", "Friston"]
 %              it takes roughly 18hours
+%              For Msim = 1e1 methods = ["bHPE"] it takes ~3hours
 %__________________________________________________________________________
 % REFERENCES:
 %
@@ -30,7 +31,7 @@ Nfields = 4e3;
 Nsubj   = [50 100 200];
 FWER    = 0.05;
 
-%------ field parameters
+%------ field parameterscd ~
 D    = 3;
 T    = 50;
 Dim  = ones([1 D])*T;
@@ -94,7 +95,7 @@ for fk = 1:length(FWHM)
                             FWER, uvals, Isotropic.trueLKC(:, fk) ) ];
     
     %------ prepare input for LKCestim_spm
-    if ismember( "spm12", methods )
+    if ismember( "spm", methods )
         % clear tmp directory
         cd( path_tmp )
         delete *im.nii
@@ -124,7 +125,7 @@ for fk = 1:length(FWHM)
     end
     
      %------ apply different estimators
-    if ismember( "spm12", methods )
+    if ismember( "spm", methods )
         method = struct();
         method.name = "spm";
         [LKCf, uf] = simulate_LKCThresh( Yspm, method, Nsubj, Msim,...

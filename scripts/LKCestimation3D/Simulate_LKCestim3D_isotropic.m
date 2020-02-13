@@ -131,12 +131,12 @@ for fk = 1:length(FWHM)
         [LKCf, uf] = simulate_LKCThresh( Yspm, method, Nsubj, Msim,...
                                                  FWER, uvals );
         % fill the result structure with statistical descriptors
-        Isotropic.spm12.LKChatn(:,:,fk,:)  = LKCf;
-        Isotropic.spm12.LKChatmean(:,:,fk) = mean( LKCf, 3 );
-        Isotropic.spm12.LKChatsd(:,:,fk)   = std( LKCf, 0, 3 );
-        Isotropic.spm12.uhatn(:,fk,:)      = uf;
-        Isotropic.spm12.uhatmean(:,fk)     = mean( uf, 2 );
-        Isotropic.spm12.uhatsd(:,fk)       = std( uf, 0, 2 );
+        Isotropic.spm.LKChatn(:,:,fk,:)  = LKCf;
+        Isotropic.spm.LKChatmean(:,:,fk) = mean( LKCf, 3 );
+        Isotropic.spm.LKChatsd(:,:,fk)   = std( LKCf, 0, 3 );
+        Isotropic.spm.uhatn(:,fk,:)      = uf;
+        Isotropic.spm.uhatmean(:,fk)     = mean( uf, 2 );
+        Isotropic.spm.uhatsd(:,fk)       = std( uf, 0, 2 );
     end
     
     if ismember( "HPE", methods )

@@ -69,7 +69,7 @@ This folder contains subfolders for the two different articles dealing with LKC 
 Each folder contains a setup script called generate_profile.m, which needs to be run first before
 any of the other scripts in the folder. It will automatically produce the neccessary subfolders and
 compile the C++ code. **Don't forget to change the paths in this script according to your folder structure!**
-Afterwards the other scripts, which reproduce the simulation results, data analysis and
+Afterwards all other scripts, which reproduce the simulation results, data analysis and
 figures from the paper can be run.
 
 README.md

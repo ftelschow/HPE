@@ -55,8 +55,9 @@ indexD    = repmat( {':'}, 1, D );
 % 
 %------ isotropic Gaussian fields
 % initialize buckets for estimators and threshold values
-Isotropic      = struct();
-Isotropic.FWER = FWER;
+Isotropic       = struct();
+Isotropic.methodnames = methods;
+Isotropic.FWER  = FWER;
 tic
 for method =  methods
     Isotropic.(method) = struct();
@@ -188,12 +189,12 @@ for fk = 1:length(FWHM)
         [LKCf, uf] = simulate_LKCThresh( Y, method, Nsubj, Msim,...
                                                  FWER, uvals );
         % fill the result structure with statistical descriptors
-        Isotropic.Forman.LKChatn(:,:,fk,:)  = LKCf;
-        Isotropic.Forman.LKChatmean(:,:,fk) = mean( LKCf, 3 );
-        Isotropic.Forman.LKChatsd(:,:,fk)   = std( LKCf, 0, 3 );
-        Isotropic.Forman.uhatn(:,fk,:)      = uf;
-        Isotropic.Forman.uhatmean(:,fk)     = mean( uf, 2 );
-        Isotropic.Forman.uhatsd(:,fk)       = std( uf, 0, 2 );
+        Isotropic.Friston.LKChatn(:,:,fk,:)  = LKCf;
+        Isotropic.Friston.LKChatmean(:,:,fk) = mean( LKCf, 3 );
+        Isotropic.Friston.LKChatsd(:,:,fk)   = std( LKCf, 0, 3 );
+        Isotropic.Friston.uhatn(:,fk,:)      = uf;
+        Isotropic.Friston.uhatmean(:,fk)     = mean( uf, 2 );
+        Isotropic.Friston.uhatsd(:,fk)       = std( uf, 0, 2 );
     end
     clear Y
 end

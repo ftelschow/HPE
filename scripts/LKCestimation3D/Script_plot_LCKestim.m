@@ -101,7 +101,7 @@ for f = 1 : length(FWHM)
 %             figsetting.legendon = 0;
 %         end
     figsetting.legendon = 1;
-    figsetting.ylabel = strcat("$\mathcal{Threshold}");
+    figsetting.ylabel = strcat("Threshold");
     figsetting.title = strcat('FWHM=',num2str(FWHM(f)));
     thre_estim = struct();
     thre_estim.methods = methods;
@@ -146,7 +146,7 @@ for f = 1 : length(FWHM)
     outputname = strcat(pic_path, "Plots_fwhm_SimResults_Isotropic_T",...
              num2str(T), "_D", num2str(D),"_FWHM",num2str(FWHM(f)));
     figsetting.legendon = 1;
-    figsetting.ylabel = strcat('$\mathcal{FWHM}$');
+    figsetting.ylabel = strcat('FWHM');
     figsetting.title = strcat('FWHM=',num2str(FWHM(f)));
     fwhm_estim = struct();
     fwhm_estim.methods = methods;

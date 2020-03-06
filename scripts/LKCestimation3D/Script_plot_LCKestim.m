@@ -1,11 +1,26 @@
-%% Load data
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%
+%%%%    This script plots the simulation results of the LKCs
+%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DESCRIPTION:
+%__________________________________________________________________________
+% REFERENCES:
+%
+%__________________________________________________________________________
+% AUTHOR: Wenyi Lin, Fabian Telschow (ftelschow@ucsd.edu)
+%__________________________________________________________________________
+%------ prepare workspace
 clear all
 close all
-pic_path = '/Users/wenyilin/Documents/MATLAB/HPE/results/pics/';
-res_path = '/Users/wenyilin/Documents/MATLAB/HPE/results/LKCestimation3D/';
-load(strcat(res_path,'SimResults_Isotropic_T50_D3_Nfields4000_methods_Forman_Friston_HPE_spm_new.mat'));
+% load generated profile containing the paths
+load('paths.mat')
+cd(path_main)
 
-%% Figure setup
+% create matlab paths to search for functions
+addpath(genpath(path_main));
+
+% Figure setup
 Vibrant    = [[0 119 187];... % blue
               [51 187 238];...% cyan
               [0 153 136];... % teal
@@ -21,12 +36,16 @@ addf  = 5;
 WidthFig   = 1300;
 HeightFig  = WidthFig * scale;
 
-figsetting = struct();
-figsetting.xvec       = (1:length(Nsubj)) *15; %nvec;
-figsetting.xtickcell  = cellstr(num2str(Nsubj'));
-figsetting.colMat = Vibrant([1 3 4 5 6],:);
-figsetting.sfont = sfont;
-figsetting.addf = addf;
+%% %------ Isotropic Gaussian simulations
+load( fullfile( path_results, 'SimResults_Isotropic_T50_D3_Nfields4000_methods_Forman_Friston_HPE_spm.mat' ) );
+
+% simulation specific figure settings
+figsetting           = struct();
+figsetting.xvec      = (1:length(Nsubj)) *15; %nvec;
+figsetting.xtickcell = cellstr(num2str(Nsubj'));
+figsetting.colMat    = Vibrant([1 3 4 5 6],:);
+figsetting.sfont     = sfont;
+figsetting.addf      = addf;
 
 %% Plotting LKC estimator
 D = 3;
@@ -47,8 +66,8 @@ for f = 1 : length(FWHM)
     figure(f), clf, hold on;
     set(gcf, 'Position', [ 300 300 WidthFig HeightFig]);
     set(gcf,'PaperPosition', [ 300 300 WidthFig HeightFig]);
-    outputname = strcat(pic_path, "Plots_SimResults_Isotropic_T",...
-             num2str(T), "_D", num2str(D),"_FWHM",num2str(FWHM(f)));
+    outputname = fullfile( path_pics, strcat("Plots_SimResults_Isotropic_T",...
+             num2str(T), "_D", num2str(D),"_FWHM",num2str(FWHM(f))));
     for d = 1:D
         subplot(1,D,d), hold on;
         if(d==1)
@@ -91,8 +110,8 @@ for f = 1 : length(FWHM)
     figure(f), clf, hold on;
     set(gcf, 'Position', [ 300 300 WidthFig HeightFig]);
     set(gcf,'PaperPosition', [ 300 300 WidthFig HeightFig]);
-    outputname = strcat(pic_path, "Plots_threshold_SimResults_Isotropic_T",...
-             num2str(T), "_D", num2str(D),"_FWHM",num2str(FWHM(f)));
+    outputname = fullfile( path_pics, strcat("Plots_threshold_SimResults_Isotropic_T",...
+             num2str(T), "_D", num2str(D),"_FWHM",num2str(FWHM(f))));
     %for d = 1:D
 %         subplot(1,D,d), hold on;
 %         if(d==1)
@@ -143,8 +162,8 @@ for f = 1 : length(FWHM)
     figure(f), clf, hold on;
     set(gcf, 'Position', [ 300 300 WidthFig HeightFig]);
     set(gcf,'PaperPosition', [ 300 300 WidthFig HeightFig]);
-    outputname = strcat(pic_path, "Plots_fwhm_SimResults_Isotropic_T",...
-             num2str(T), "_D", num2str(D),"_FWHM",num2str(FWHM(f)));
+    outputname = fullfile(path_pics, strcat("Plots_fwhm_SimResults_Isotropic_T",...
+             num2str(T), "_D", num2str(D),"_FWHM",num2str(FWHM(f))));
     figsetting.legendon = 1;
     figsetting.ylabel = strcat('FWHM');
     figsetting.title = strcat('FWHM=',num2str(FWHM(f)));

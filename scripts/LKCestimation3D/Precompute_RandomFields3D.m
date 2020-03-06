@@ -74,3 +74,22 @@ for f = FWHM
 
 end
 toc
+
+% 
+%--------------------------------------------------------------------------
+%------ Scale space Gaussian fields
+rng(23)
+params = 4:0.2:15;
+tic
+    % generate random fields
+    rfs = [];
+    for k = 1:Nbatch
+            rfs_tmp = generateField( N, 1, [T T length(params)], ...
+                              "scale-space", params );
+            rfs = cat(D+1, rfs, rfs_tmp);
+        clear rfs_tmp 
+    end
+toc
+save( fullfile( path_data, strcat("ScaleSpace__T",...
+                num2str(T), "_D", num2str(D), "_Nfields",...
+                num2str(N*Nbatch) )), 'rfs', 'LKC', 'params', '-v7.3' )

@@ -1,4 +1,4 @@
-function plot_LKCestim(Y,figsetting,outputname)
+function plot_LKCestim( Y, figsetting, outputname )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % This function plots LCK estimator results
 %
@@ -15,17 +15,17 @@ function plot_LKCestim(Y,figsetting,outputname)
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 methods = Y.methods;
-hatn = Y.hatn;
-hatstd = Y.hatstd;
+hatn    = Y.hatn;
+hatstd  = Y.hatstd;
 trueLKC = Y.trueLKC;
 
-xvec = figsetting.xvec;
+xvec  = figsetting.xvec;
 sfont = figsetting.sfont;
-addf = figsetting.addf;
+addf  = figsetting.addf;
 xtickcell = figsetting.xtickcell;
-ylabels = figsetting.ylabel;
-titles = figsetting.title;
-legendon = figsetting.legendon;
+ylabels   = figsetting.ylabel;
+titles    = figsetting.title;
+legendon  = figsetting.legendon;
 save = 1;
 
 if ~exist( 'outputname', 'var' )
@@ -58,7 +58,6 @@ if(legendon==1)
     h = legend(methods, 'Location', 'northwest' ); set(h, 'Interpreter', 'latex');
     legend boxoff
 end
-%    saveas( gcf,strcat('pics/',outputname) )
 
 if(save==1)
     print( outputname, '-dpng')

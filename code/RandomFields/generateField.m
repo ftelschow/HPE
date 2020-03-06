@@ -25,7 +25,7 @@ if strcmp( TYPE, 'isotropic' ) && ( D ~= 1 && D ~= 2 && D ~= 3 )
     error( 'dim must be of length smaller than 4!' );
 end
 
-if strcmp( TYPE, 'scale-space' ) && ( D ~= 2 )
+if strcmp( TYPE, 'scale-space' ) && ( D > 3 )
     error( 'N must be 2' );
 end
 
@@ -110,6 +110,19 @@ if D==2 && strcmp(TYPE, "scale-space")
     end
 end
 
+if D==3 && strcmp(TYPE, "scale-space")
+    b = 5;
+    % Generate fields
+    whitenoise_large = randn(L + 2*b*params(end), L + 2*b*params(end), n);
+    
+    f = zeros(L, L, length(params), n);
+    for k = 1:length(params)
+        w = gaussFilter( params(k), 2 ) * sqrt( ( 2 * pi )^2 * params(k)^2 ) / sqrt(pi);
+        z_params = convn(whitenoise_large, w, 'same');
+        f(:,:,k,:) = z_params( b*params(end)+1:(end-b*params(end)), ...
+                               b*params(end)+1:(end-b*params(end)), :);
+    end
+end
 
 %%%% compute the true isotropic LKC
 if strcmp( TYPE, 'isotropic' ) || strcmp( TYPE, 'nongauss' )

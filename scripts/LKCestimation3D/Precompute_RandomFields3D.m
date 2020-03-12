@@ -85,11 +85,11 @@ tic
     rfs = [];
     for k = 1:Nbatch
             rfs_tmp = generateField( N, 1, [T T length(params)], ...
-                              "scale-space", params );
+                                     "scale-space", params );
             rfs = cat(D+1, rfs, rfs_tmp);
         clear rfs_tmp 
     end
 toc
-save( fullfile( path_data, strcat("ScaleSpace__T",...
+save( fullfile( path_data, strcat("ScaleSpace_T",...
                 num2str(T), "_D", num2str(D), "_Nfields",...
                 num2str(N*Nbatch) )), 'rfs', 'LKC', 'params', '-v7.3' )

@@ -134,7 +134,7 @@ for j = 1 : nsim % start loop over simulation
             mR = reshape( R * multiplier( :, i ), sR );
 
             % Get the EC stepfunctions
-            EC = EulerCharCrit( mR, mask, L0, version );
+            EC = EulerCharCrit(mR, mask, L0, version);
             EC = EC{ 1 };
 
             % Get LKC by integrating the Euler Char curves against the Hermite

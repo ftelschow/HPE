@@ -23,7 +23,6 @@ cd(path_main)
 
 % create matlab paths to search for functions
 addpath(genpath(path_main));
-addpath(genpath(path_RFTtoolbox));
 addpath(genpath(path_spm12));
 
 %------ simulation parameters

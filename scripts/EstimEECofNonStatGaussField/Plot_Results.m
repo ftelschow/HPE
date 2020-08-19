@@ -76,6 +76,7 @@ outname = [ ...
 
 % Global figure settings
 trueLKC    = L(1:2);
+trueLKC2   = [ L(1) 47.7 ]
 
 WidthFig   = 1300;
 HeightFig  = WidthFig * scale;
@@ -117,7 +118,7 @@ for l = 1:2
 
             % Plot the true value
             plot([xvec(1)-10 xvec(end)+10],[trueLKC(i) trueLKC(i)],'k', 'LineWidth', 2 ), hold on
-
+            plot([xvec(1)-10 xvec(end)+10],[trueLKC2(i) trueLKC2(i)],'k--', 'LineWidth', 2 ), hold on
 
             % Modify gloabal font size for this plot
             set(gca,'FontSize', sfont)

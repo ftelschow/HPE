@@ -4,7 +4,8 @@
 %%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % DESCRIPTION: This script precomputes the random fields used in the matlab
-% script Simulation_LKCestimators.m
+% script Simulation_LKCestimators.m. This procedure will speed up the
+% simulations quite considerably.
 %__________________________________________________________________________
 % REFERENCES:
 %
@@ -19,7 +20,7 @@ close all
 load('paths.mat')
 
 % create matlab paths to search for functions
-addpath(genpath(path_main));
+addpath( genpath( path_RFT ) );
 
 %------ define parameters for generation of random fields
 % number of generated random fields

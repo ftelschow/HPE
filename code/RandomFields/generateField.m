@@ -97,6 +97,7 @@ end
 end
 
 if D==2 && strcmp(TYPE, "scale-space")
+    L = 50;
     b = 5;
     % Generate fields
     whitenoise_large = randn(L + 2*b*params(end), n, nsim);
@@ -127,6 +128,7 @@ end
 %%%% compute the true isotropic LKC
 if strcmp( TYPE, 'isotropic' ) || strcmp( TYPE, 'nongauss' )
     alpha = 1 / ( 4 * params^2 );
+    L = dim(1);
     switch D
         case 1
             LKC = ( L - 1 ) * sqrt( 2 * alpha );

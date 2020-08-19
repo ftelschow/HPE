@@ -109,7 +109,7 @@ if method(1) % This simulations run in under 10 minutes
 
                 % Estimate the LKC
                 tmp = LKCestim_HermProjExact( eps1, D, -666, 1, ...
-                                              [-1 1], 1, "C" );
+                                              [-1 1], 1, "Gaussian", 4, "C" );
                 LKCherm.hatn(:,n,i,cont_cas)  = tmp.hatn;
             end
         end
@@ -143,7 +143,7 @@ if method(2) % This simulations runs in approximate 7 hours on a standard laptop
                         eps1 = eps(:,:,randsample(1:Ndata, N));
                     case 2 % experiment case, demean and standardize samp-variance to 1
                         eps1 = standardize(eps(:,:,randsample(1:Ndata, N)), 1, 1);
-                    case 3 % variance known case, demean data
+                    cdcase 3 % variance known case, demean data
                         eps1 = standardize(eps(:,:,randsample(1:Ndata, N)), 1, 0);
                     case 4 % mean known case, standardize samp-variance to 1
                         eps1 = standardize(eps(:,:,randsample(1:Ndata, N)), 0, 1);
@@ -151,7 +151,7 @@ if method(2) % This simulations runs in approximate 7 hours on a standard laptop
 
                 % Estimate the LKC
                 tmp = LKCestim_HermProjExact( eps1, D, -666, Mboot, ...
-                                              [-1 1], 1, "C" );
+                                              [-1 1], 1, "Gaussian", 4, "C" );
                 LKChermB.hatn(:,n,i,cont_cas)  = tmp.hatn;
             end
         end
@@ -346,7 +346,7 @@ for nbatch = 1:2
 
             % Estimate the LKC
             tmp  = LKCestim_HermProjExact( squeeze(f(:,:,1:N,:)), 2, -666, 1,...
-                                           [-1 1], 1, "C");
+                                           [-1 1], 1, "Gaussian", 4, "C");
             LKCherm.hatn(:,:,i,nu_i)  = tmp.hatn;
             LKCherm.hatmean(:,i,nu_i) = mean( LKCherm.hatn(:,:,i,nu_i), 2 );
             LKCherm.hatstd(:,i,nu_i)  = std( LKCherm.hatn(:,:,i,nu_i), 0, 2 );

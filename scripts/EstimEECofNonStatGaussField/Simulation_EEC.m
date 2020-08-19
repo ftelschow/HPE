@@ -298,13 +298,12 @@ for type = TYPE
             set(gcf,'PaperPosition', [ 300 300 WidthFig HeightFig])
             imagesc(u, u, flipud(C))
             axis equal tight
-            colorbar
-            hax = gca;
-            hax.YTickLabel = flipud(hax.YTickLabel);
             xticks([-5 -2.5 0 2.5 5])
             xticklabels( {'-5', '-2.5', '0', '2.5', '5'} )
             yticks([-5 -2.5 0 2.5 5])
             yticklabels( {'-5', '-2.5', '0', '2.5', '5'} )
+            hax = gca;
+            hax.YTickLabel = flipud(hax.YTickLabel);
             colorbar;
             h = title('Covariance of HPE');
             set(h, 'Interpreter', 'latex');

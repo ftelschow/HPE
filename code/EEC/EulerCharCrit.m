@@ -1,4 +1,4 @@
-function EC = EulerCharCrit(f, mask, L0, version)
+function EC = EulerCharCrit(f, mask, L0, cc, version)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Computes the Euler characteristic of excursion sets
 %
@@ -67,13 +67,15 @@ if D > 3
     error( "The method is unfortunately until now only implemeted for D < 3." )
 end
 
-switch D
-    case 1
-        cc = 2;
-    case 2
-        cc = 4;
-    case 3
-        cc = 6;
+if ~exist( 'cc', 'var' )
+    switch D
+        case 1
+            cc = 2;
+        case 2
+            cc = 4;
+        case 3
+            cc = 6;
+    end
 end
 
 

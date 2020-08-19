@@ -77,7 +77,7 @@ void ECcrit1D(double *z, double *out, mwSize i)
 /* This is the C++ subroutine computing the change in Euler characterisitic in 2D
  * Input:
  *   - *z: pointer to the input array 
- *   - cc: integer giving the connectivity (currently, only 8 is supported)
+ *   - cc: integer giving the connectivity (currently, only 4 is supported)
  *   - ADD all inputs with short discribtion
  */
 void ECcrit2D(double *z, double cc, double *out, mwSize i, mwSize j)
@@ -131,30 +131,85 @@ void ECcrit2D(double *z, double cc, double *out, mwSize i, mwSize j)
             /******************************************************************
              * compute the change in dec by checking which nD-faces are created
              ******************************************************************/
-            // subtract number of edges
-            double ind1[4] = {1, 3, 5, 7};
-            double count_t = 0;
-            for(ss=0; ss < cc; ss++){
-                ind_ss = ind1[ss];
-                // if new edge appears increase dec by 1
-                if(x[ind_ss] > x[4])
-                {
-                    count_t += 1;
+            if(cc==4){
+                // subtract number of edges
+                double ind1[4] = {1, 3, 5, 7};
+                double count_t = 0;
+                for( ss=0; ss < cc; ss++ ){
+                    ind_ss = ind1[ss];
+                    // if new edge appears increase dec by 1
+                    if(x[ind_ss] > x[4])
+                    {
+                        count_t += 1;
+                    }
+                }
+
+                dec = dec - count_t;
+
+                // add number of faces
+                if(x[0] > x[4] && x[1] > x[4] && x[3] > x[4])
+                  dec += 1;
+                if(x[1] > x[4] && x[2] > x[4] && x[5] > x[4])
+                  dec += 1;
+                if(x[3] > x[4] && x[6] > x[4] && x[7] > x[4])
+                  dec += 1;
+                if(x[5] > x[4] && x[7] > x[4] && x[8] > x[4])
+                  dec += 1;
+            } else if( cc == 8 ){
+                // subtract number of edges
+                double ind1[8] = { 0, 1, 2, 3, 5, 6, 7, 8 };
+                double count_t = 0;
+                for( ss=0; ss < cc; ss++ ){
+                    ind_ss = ind1[ss];
+                    // if new edge appears increase dec by 1
+                    if( x[ind_ss] > x[4] )
+                    {
+                        count_t += 1;
+                    }
+                }
+
+                dec = dec - count_t;
+
+                /* add number of faces, be careful since triangulation
+                 requires to consider more cases */
+                // upper left quadrant
+                if( x[0] > x[4] && x[1] > x[4] && x[3] > x[4] ){
+                  // +2 lines, +3 faces, +1 vertex = ECchange = 1-2+3
+                  dec += 2;
+                } else if( ( x[0] > x[4] && x[1] > x[4] ) ||
+                           ( x[3] > x[4] && x[1] > x[4] ) ||
+                           ( x[0] > x[4] && x[3] > x[4] ) ) {
+                  dec += 1;
+                }
+                // lower left quadrant
+                if( x[1] > x[4] && x[2] > x[4] && x[5] > x[4] ){
+                  // +2 lines, +3 faces, +1 vertex = ECchange = 1-2+3
+                  dec += 2;
+                } else if( ( x[2] > x[4] && x[1] > x[4] ) ||
+                           ( x[5] > x[4] && x[1] > x[4] ) ||
+                           ( x[2] > x[4] && x[5] > x[4] ) ) {
+                  dec += 1;
+                }
+                // upper right quadrant
+                if( x[3] > x[4] && x[6] > x[4] && x[7] > x[4] ){
+                  // +2 lines, +3 faces, +1 vertex = ECchange = 1-2+3
+                  dec += 2;
+                } else if( ( x[6] > x[4] && x[3] > x[4] ) ||
+                           ( x[3] > x[4] && x[7] > x[4] ) ||
+                           ( x[6] > x[4] && x[7] > x[4] ) ) {
+                  dec += 1;
+                }
+                // lower right quadrant
+                if( x[5] > x[4] && x[7] > x[4] && x[8] > x[4] ){
+                  // +2 lines, +3 faces, +1 vertex = ECchange = 1-2+3
+                  dec += 2;
+                } else if( ( x[5] > x[4] && x[8] > x[4] ) ||
+                           ( x[7] > x[4] && x[8] > x[4] ) ||
+                           ( x[5] > x[4] && x[7] > x[4] ) ) {
+                  dec += 1;
                 }
             }
-
-            dec = dec - count_t;
-
-            // add number of faces
-            if(x[0] > x[4] && x[1] > x[4] && x[3] > x[4])
-              dec += 1;
-            if(x[1] > x[4] && x[2] > x[4] && x[5] > x[4])
-              dec += 1;
-            if(x[3] > x[4] && x[6] > x[4] && x[7] > x[4])
-              dec += 1;
-            if(x[5] > x[4] && x[7] > x[4] && x[8] > x[4])
-              dec += 1;
-
+                    
             // save the negative dec in the odd out locations (minus
             // sign convention used to recreate the ec curve)
             *(out + nn*2 + 1) = -dec;

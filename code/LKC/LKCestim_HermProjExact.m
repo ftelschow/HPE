@@ -1,7 +1,7 @@
 function LKC = LKCestim_HermProjExact( Y, D, mask, Mboot, ...
-                                             L0, version )
+                                             L0, bootsmultiplier, cc, version )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% This function computes the Lipschitz Killing curvature using the
+% This function computes the Lipschitz Killing curvatuversionre using the
 % Hermite projection estimator proposed in Schwartzman et al (2020+).
 % It uses a fast and exact way to compute the EC curves by looping through
 % discrete critical values and computes there contribution to the change in
@@ -20,6 +20,12 @@ function LKC = LKCestim_HermProjExact( Y, D, mask, Mboot, ...
 %           number of bootstrap processes used for estimation of LKC
 %   L0 (integer):
 %           Euler characteristic of the mask
+%   bootsmultiplier (string)
+%           Either "Gaussian", "Multinomial" or "Rademacher". Sets the
+%           multipliers in the bootstrap to be either Gaussians or Multinomials.
+%   version (string):
+%           Either "C" or "matlab". Default is "C", which implments the EC
+%           computation in C++ otherwise a matlab only version is used.
 %
 % Output:
 %        LKC (array of dimension Dx1): containing the estimated Lipschitz
@@ -68,6 +74,10 @@ if ~exist( 'Mboot', 'var' )
    Mboot = 0;
 end
 
+if ~exist( 'bootsmultiplier', 'var' )
+    bootsmultiplier = "Gaussian";
+end
+
 if ~exist( 'u', 'var' )
     % default sampling of R for output of covariances and variances
     u = -8 : 0.01 : 8;
@@ -98,6 +108,17 @@ if ~exist( 'L0', 'var' )
     L0 = 1;
 end
 
+if ~exist( 'cc', 'var' )
+    switch D
+        case 1
+            cc = 2;
+        case 2
+            cc = 4;
+        case 3
+            cc = 6;
+    end
+end
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% main function %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Initialize the LKC output
@@ -118,9 +139,20 @@ for j = 1 : nsim % start loop over simulation
     % get the residuals for the j-th simulation
     R = Y( index{:}, :, j );
     
-    if( Mboot > 1 )    
-        % Get weights for the multiplier bootstrap
-        multiplier = normrnd( 0, 1, [ N, Mboot ] );
+    if( Mboot > 1 )
+        % Get weights for the bootstrap process. Defalut is Gaussian
+        % weights
+        if strcmp( bootsmultiplier, "Multinomial" )
+            multiplier = mnrnd( N, ones( [1, N] ) / N, Mboot )' - 1;
+        elseif strcmp( bootsmultiplier, "Naive" )
+            multiplier = mnrnd( N, ones( [1, N] ) / N, Mboot )';
+
+        elseif strcmp( bootsmultiplier, "Rademacher" )
+            multiplier = randi(2,[N,Mboot])*2-3;
+        else
+            % Get weights for the multiplier bootstrap
+            multiplier = normrnd( 0, 1, [ N, Mboot ] );            
+        end
         
         % reshape and and standardize the field, such that it has variance
         % 1
@@ -134,7 +166,7 @@ for j = 1 : nsim % start loop over simulation
             mR = reshape( R * multiplier( :, i ), sR );
 
             % Get the EC stepfunctions
-            EC = EulerCharCrit(mR, mask, L0, version);
+            EC = EulerCharCrit(mR, mask, L0, cc, version);
             EC = EC{ 1 };
 
             % Get LKC by integrating the Euler Char curves against the Hermite
@@ -147,7 +179,7 @@ for j = 1 : nsim % start loop over simulation
         end
     else
         % Get the EC stepfunctions
-        ECall = EulerCharCrit( R, mask, L0, version );
+        ECall = EulerCharCrit( R, mask, L0, cc, version );
 
         for i = 1:N  % start loop over realisations (bootstrap or normal)
             % Get LKC by integrating the Euler Char curves against the Hermite

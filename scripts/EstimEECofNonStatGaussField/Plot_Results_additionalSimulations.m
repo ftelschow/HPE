@@ -158,7 +158,7 @@ for l = 1:2
 
             % Add legend
             if i==1 && l==2
-               legend( 'bHPE (Gaussian)', 'bHPE (Multinomial)', 'bHPE (mod. Multinomial)', 'bHPE (Rademacher)',...
+               legend( 'Gaussian', 'Multinomial', 'mod. Multinomial', 'Rademacher',...
                             'Location', 'northeast' );
                 set(legend, 'fontsize', sfont);
                 legend boxoff
@@ -171,7 +171,7 @@ for l = 1:2
      fig.PaperPositionMode = 'auto';
      fig_pos = fig.PaperPosition;
      fig.PaperSize = [fig_pos(3) fig_pos(4)];
-     print(strcat(path_pics,outputname,'_additionalSimulations' ), '-dpng')
+     print(strcat(path_pics,'Multipliers_',outputname ), '-dpng')
     hold off;
 end
 
@@ -327,4 +327,68 @@ set(gcf,'papersize',[12 12*scale])
  fig_pos = fig.PaperPosition;
  fig.PaperSize = [fig_pos(3) fig_pos(4)];
  print(strcat(path_pics,'varyingResolution_LKCherm' ), '-dpng')
+hold off;
+
+
+%% Plot the dependence on Mboot
+% files to be loaded
+load( strcat( path_results, 'simLKChermB_diffMboot.mat'))
+
+% Change the axis labels
+xvec       = (1:length(Mbootvec) ) * 15; %nvec;
+xtickcell  = {'500', '1000', '2500', '5000', '7500'};
+yvec1      = [ 0.1 0.11 0.12 0.13 0.14];
+yvec2      = [ 42.5 45 47.5 3.7 ];
+ytickcell1 = { '0.1' '0.11' '0.12' '0.13', '0.14' };
+ytickcell2 = { '42.5' '45' '47.5' '50' };
+
+% Global figure settings
+trueLKC    = L(1:2);
+
+figure, clf, hold on;
+% Define size and location of the figure [xPos yPos WidthFig HeightFig]
+set(gcf, 'Position', [ 300 300 WidthFig HeightFig]);
+set(gcf,'PaperPosition', [ 300 300 WidthFig HeightFig])
+
+% LKC plot
+for i = [1 2]
+        % generate subplot
+        subplot(1,2,i), hold on;
+        % Plot multinomial estimator
+        ErrorBar = plot(xvec, squeeze(LKChermBMboot.hatstd(i,:).^2), 'o'); hold on ;
+        set(ErrorBar,'Color',colMat(1,:),'LineWidth',2)
+
+
+        % Modify gloabal font size for this plot
+        set( gca,'FontSize', sfont )
+
+        % Change axis style
+        xlim([xvec(1)-10 xvec(end)+10])
+        xticks(xvec)
+        xticklabels(xtickcell)
+
+        h = xlabel('Bootstrap replicates', 'fontsize', sfont+addf); set(h, 'Interpreter', 'latex');
+        if i==1
+           % ylim([yvec1(1) yvec1(end)+0.5]);
+           % yticks(yvec1);
+           % yticklabels(ytickcell1);
+            h = ylabel('Variance of $\mathcal{L}_1$', 'fontsize', sfont+addf);
+            set(h, 'Interpreter', 'latex');
+        else
+           % ylim([yvec2(1)-0.5 yvec2(end)+0.5]);
+           % yticks(yvec2);
+%            yticklabels(ytickcell2);
+            h = ylabel('Variance of $\mathcal{L}_2$', 'fontsize', sfont+addf); set(h, 'Interpreter', 'latex');
+        end
+
+        % Add legend
+
+end
+
+set(gcf,'papersize',[12 12*scale])
+ fig = gcf;
+ fig.PaperPositionMode = 'auto';
+ fig_pos = fig.PaperPosition;
+ fig.PaperSize = [fig_pos(3) fig_pos(4)];
+ print(strcat(path_pics,'diffMboot_LKChermB' ), '-dpng')
 hold off;

@@ -33,7 +33,7 @@ Nsim  = 1000;       % number of simulations
 Nsubj = [10 50 100];% number of subjects/sample size
 
 % Field parameters
-TYPE = ["isotropic", "scale-space"];
+TYPE = "scale-space"; %["isotropic", "scale-space"];
 L0   = 1;     % EC of domain
 D    = 2;     % Dimension of domain (including scale)
 T    = 50;    % size of domain
@@ -166,7 +166,7 @@ for type = TYPE
         fig.PaperPositionMode = 'auto';
         fig_pos = fig.PaperPosition;
         fig.PaperSize = [fig_pos(3) fig_pos(4)];
-        print(strcat(path_pics, type, ".png"), '-dpng')
+%        print(strcat(path_pics, type, ".png"), '-dpng')
 
         % Plot single example of smoothing
         figure(2), clf, hold on,
@@ -195,7 +195,7 @@ for type = TYPE
         fig.PaperPositionMode = 'auto';
         fig_pos = fig.PaperPosition;
         fig.PaperSize = [fig_pos(3) fig_pos(4)];
-        print(strcat(path_pics, type, "EC1_nu5.png"), '-dpng')
+  %      print(strcat(path_pics, type, "EC1_nu5.png"), '-dpng')
 
         % Plot 10 examples of raw EC curves
         figure(3), clf, hold on,
@@ -314,7 +314,7 @@ for type = TYPE
         fig.PaperPositionMode = 'auto';
         fig_pos = fig.PaperPosition;
         fig.PaperSize = [fig_pos(3) fig_pos(4)];
-        print(strcat(path_pics, type, "_EEC-hat-cov",num2str(nsubj),".png"), '-dpng')
+       print(strcat(path_pics, type, "_EEC-hat-cov",num2str(nsubj),".png"), '-dpng')
 
         % Comparison of variances
         figure(7), clf, hold on

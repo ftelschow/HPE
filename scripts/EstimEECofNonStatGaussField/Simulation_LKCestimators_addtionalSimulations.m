@@ -240,8 +240,8 @@ resaddVec = [ 0 1 3 5 7 ];
 drVec     = [ 6 4 3 2 1 ];
 
 T      = 49;
-Nsim   = 1e3;
-N      = 100;
+Nsim   = 1;
+N      = 2;
     
 dimp  = [145 145];
 sigma = 15;
@@ -311,10 +311,11 @@ for dr = drVec( [ 1 2 4 5 ] )
             set(gca, 'FontSize', 20)
             set(gca,'Ydir','reverse')
             set(gcf,'papersize',[12 12])
-%             xticks([10 20 30 40])
-%             xticklabels( {'10' '20' '30' '40'} )
-%             yticks([0 10 20 30 40])
-%             yticklabels( {'50' '40' '30' '20' '10'} )
+            coords = linspace(1, size(I,1), 6);
+             xticks(coords)
+             xticklabels( {'' '10' '20' '30' '40' '50'} )
+             yticks(coords)
+             yticklabels( {'50' '40' '30' '20' '10' ''} )
         fig = gcf;
         fig.PaperPositionMode = 'auto';
         fig_pos = fig.PaperPosition;
@@ -327,3 +328,64 @@ save( strcat( path_results, 'sim_varyingResolution_LKCherm.mat'),...
               'LKCherm4', 'LKCherm8', 'L', 'Nvec', 'drVec' )
 
 clear LKCherm4 LKCherm8 eps1 cont_cas N i
+
+
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%--------------------------------------------------------------------------
+%----------- Simulation of bHPE (using several choices for Mboot) ---------
+%--------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% We compare LKC estimation using the bHPE for different number of
+% bootstrap replicates
+%--------------------------------------------------------------------------
+% set seed to make sure the output is always the same
+rng(7)
+Nsim = 5e3;
+
+Mbootvec = [ 500 1000 2500 5000 7500 ];
+casNums = 2;
+
+% This simulations runs in approximate 3 hours on a standard laptop
+% initialize containers for the LKCs
+ LKChermBMboot = struct( 'hatn', zeros(2, Nsim, length(Mbootvec)), ...
+                         'hatmean', zeros(2, length(Mbootvec)),...
+                         'hatstd', zeros(2, length(Mbootvec)) );
+
+%%%% Estimate LKC using hermite estimator
+for i = 1:length(Mbootvec)
+    tic
+    Mboot = Mbootvec(i);
+    N = Nvec(2);
+    
+    for n = 1:Nsim
+        for cont_cas = casNums
+            % standardize the data
+            switch cont_cas
+                case 1 % theory case, no standardization
+                    eps1 = eps(:,:,randsample(1:Ndata, N));
+                case 2 % experiment case, demean and standardize samp-variance to 1
+                    eps1 = standardize(eps(:,:,randsample(1:Ndata, N)), 1, 1);
+                case 3 % varia1nce known case, demean data
+                    eps1 = standardize(eps(:,:,randsample(1:Ndata, N)), 1, 0);
+                case 4 % mean known case, standardize samp-variance to 1
+                    eps1 = standardize(eps(:,:,randsample(1:Ndata, N)), 0, 1);
+            end
+
+            % Estimate the LKCs using Mboot = 500
+            tmp = LKCestim_HermProjExact( eps1, D, -666, Mboot, ...
+                                          1, "Gaussian", 4, "C" );
+            LKChermBMboot.hatn(:,n,i)  = tmp.hatn;
+
+        end
+    end        
+
+    LKChermBMboot.hatmean(:,i,:) = mean( LKChermBMboot.hatn(:,:,i), 2 );
+    LKChermBMboot.hatstd(:,i,:)  = std( LKChermBMboot.hatn(:,:,i), 0, 2 );
+
+    %%%% save results
+    save( strcat( path_results,'simLKChermB_diffMboot.mat' ),...
+                  'dataname', 'LKChermBMboot', 'L', 'Nvec', 'Mbootvec' )
+
+    toc
+end
+

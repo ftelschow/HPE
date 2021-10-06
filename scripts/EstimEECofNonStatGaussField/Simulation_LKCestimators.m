@@ -31,7 +31,7 @@ addpath(genpath(path_main));
 
 %------ define parameters for this script
 %-- global parameters for the simulation
-method   = [0 1 0 0]; % [ "HPE" "bHPE" "warp" "worsley" ]; % LKC estimation method
+method   = [0 0 1 0]; % [ "HPE" "bHPE" "warp" "worsley" ]; % LKC estimation method
 Nvec     = [10 30 50 75 100 150 200];         % sample sizes
 Nsim     = 1e3;                               % number of simulations
 casNums  = [1 2]; % which cases for standardization ['theory' 'demeanvar1' 'var1' 'demean']
@@ -106,10 +106,9 @@ if method(1) % This simulations run in under 10 minutes
                     case 4 % mean known case, standardize samp-variance to 1
                         eps1 = standardize(eps(:,:,randsample(1:Ndata, N)), 0, 1);
                 end
-
                 % Estimate the LKC
                 tmp = LKCestim_HermProjExact( eps1, D, -666, 1, ...
-                                              [-1 1], 1, "Gaussian", 4, "C" );
+                                              1, "Gaussian", 4, "C" );
                 LKCherm.hatn(:,n,i,cont_cas)  = tmp.hatn;
             end
         end
@@ -151,7 +150,7 @@ if method(2) % This simulations runs in approximate 7 hours on a standard laptop
 
                 % Estimate the LKC
                 tmp = LKCestim_HermProjExact( eps1, D, -666, Mboot, ...
-                                              [-1 1], 1, "Gaussian", 4, "C" );
+                                              1, "Gaussian", 4, "C" );
                 LKChermB.hatn(:,n,i,cont_cas)  = tmp.hatn;
             end
         end
@@ -197,7 +196,7 @@ if method(3) % This simulations run in a couple of minutes
             %%%% Estimate LKC using Taylor Worsley
             for m = 1:Nsim
                 tmp(:,m) = LKCestim_warp( eps(:,:,randsample(1:Ndata, N)), ...
-                                          center, normalize, 0, 0 );
+                                          center, normalize );
             end
             clear m
 

@@ -146,9 +146,8 @@ for j = 1 : nsim % start loop over simulation
             multiplier = mnrnd( N, ones( [1, N] ) / N, Mboot )' - 1;
         elseif strcmp( bootsmultiplier, "Naive" )
             multiplier = mnrnd( N, ones( [1, N] ) / N, Mboot )';
-
         elseif strcmp( bootsmultiplier, "Rademacher" )
-            multiplier = randi(2,[N,Mboot])*2-3;
+            multiplier = randi( 2, [ N, Mboot ] ) * 2 - 3;
         else
             % Get weights for the multiplier bootstrap
             multiplier = normrnd( 0, 1, [ N, Mboot ] );            
@@ -159,7 +158,6 @@ for j = 1 : nsim % start loop over simulation
         R = reshape( R, prod( sR(1:D) ), N );
         % normalize the residuals
         R = R ./ sqrt(sum( R.^2, 2 ));
-        
           
         for i = 1:Mboot
             % get the bootstrapped process

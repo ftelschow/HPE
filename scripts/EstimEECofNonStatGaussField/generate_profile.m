@@ -18,19 +18,20 @@ close all
 
 %------ change accordingly to your local folder structure
 % path to git repository HPE
-path_main = '/home/drtea/matlabToolboxes/HPE/';
+path_main = '/home/fabian/Seafile/Code/matlabToolboxes/HPE/';
 % path to spm12 toolbox
-path_spm12 = '/home/drtea/matlabToolboxes/spm12/';
+path_spm12 = '/home/fabian/Seafile/Code/matlabToolboxes/spm12/';
 
 %------ derived paths and save them
 path_pics = strcat( path_main, 'pics/EstimEECofNonStatGaussField/' );
 path_data = strcat( path_main, 'data/EstimEECofNonStatGaussField/' );
 path_results = strcat( path_main, 'results/EstimEECofNonStatGaussField/' );
+path_RFT = strcat( path_main, 'code/');
 
 % save the path identifiers
 save( strcat( path_main, '/scripts/EstimEECofNonStatGaussField/paths.mat' ),...
                          'path_main', 'path_pics', 'path_spm12', ...
-                         'path_data', 'path_results' )
+                         'path_data', 'path_results', 'path_RFT' )
 
 %------ produce necessary folder substructure
 cd( path_main )

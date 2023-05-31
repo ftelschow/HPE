@@ -26,7 +26,7 @@ addpath( genpath( path_RFT ) );
 % number of generated random fields
 Ndata = 1e4;
 % Field parameters
-TYPE  = [ "isotropic" "scale-space" "nongauss" ];
+TYPE  = ["isotropic" "scale-space" "nongauss" "ng_scale"];
 D     = 2;           % Dimension of domain (including scale)
 T     = 50;          % size of domain
 nu    = 5;           % bandwidth parameter for isotropic and nongauss
@@ -68,5 +68,14 @@ outputname = strcat( path_data, 'RandomFields_', 'Ndata', num2str(Ndata),'_',...
                      type, '_D', num2str(D), 'T', num2str(T),...
                     '_params', num2str(nu), '.mat' );
 [eps, L] = generateField( Ndata, 1, T*ones([1 D]), type, nu );
+save(outputname, 'eps', 'L','-v7.3')
+
+%-- non-gauss
+type = "ng_scale";
+outputname = strcat( path_data, 'RandomFields_', 'Ndata', num2str(Ndata),'_',...
+                     type, '_D', num2str(D), 'T', num2str(T),...
+                    '_params', num2str(gamma(1)),...
+                    '_', num2str(gamma(end)), '.mat' );
+[eps, L] = generateField( Ndata, 1, T*ones([1 D]), type, gamma );
 save(outputname, 'eps', 'L','-v7.3')
 toc

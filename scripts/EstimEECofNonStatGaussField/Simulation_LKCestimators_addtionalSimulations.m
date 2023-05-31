@@ -389,3 +389,61 @@ for i = 1:length(Mbootvec)
     toc
 end
 
+%% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%--------------------------------------------------------------------------
+%----------- Simulation of non-stationary non-Gaussian field --------------
+%--------------------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% We compare LKC estimation using the bHPE for different number of
+% bootstrap replicates
+%--------------------------------------------------------------------------
+% set seed to make sure the output is always the same
+rng(7)
+Nsim = 1e3;
+
+Mboot = [ 5000 7500 ];
+casNums = 2;
+
+% This simulations runs in approximate 3 hours on a standard laptop
+% initialize containers for the LKCs
+ LKChermBMboot = struct( 'hatn', zeros(2, Nsim, length(Mbootvec)), ...
+                         'hatmean', zeros(2, length(Mbootvec)),...
+                         'hatstd', zeros(2, length(Mbootvec)) );
+
+%%%% Estimate LKC using hermite estimator
+for i = 1:length(Mbootvec)
+    tic
+    Mboot = Mbootvec(i);
+    N = Nvec(2);
+    
+    for n = 1:Nsim
+        for cont_cas = casNums
+            % standardize the data
+            switch cont_cas
+                case 1 % theory case, no standardization
+                    eps1 = eps(:,:,randsample(1:Ndata, N));
+                case 2 % experiment case, demean and standardize samp-variance to 1
+                    eps1 = standardize(eps(:,:,randsample(1:Ndata, N)), 1, 1);
+                case 3 % varia1nce known case, demean data
+                    eps1 = standardize(eps(:,:,randsample(1:Ndata, N)), 1, 0);
+                case 4 % mean known case, standardize samp-variance to 1
+                    eps1 = standardize(eps(:,:,randsample(1:Ndata, N)), 0, 1);
+            end
+
+            % Estimate the LKCs using Mboot = 500
+            tmp = LKCestim_HermProjExact( eps1, D, -666, Mboot, ...
+                                          1, "Gaussian", 4, "C" );
+            LKChermBMboot.hatn(:,n,i)  = tmp.hatn;
+
+        end
+    end        
+
+    LKChermBMboot.hatmean(:,i,:) = mean( LKChermBMboot.hatn(:,:,i), 2 );
+    LKChermBMboot.hatstd(:,i,:)  = std( LKChermBMboot.hatn(:,:,i), 0, 2 );
+
+    %%%% save results
+    save( strcat( path_results,'simLKChermB_diffMboot.mat' ),...
+                  'dataname', 'LKChermBMboot', 'L', 'Nvec', 'Mbootvec' )
+
+    toc
+end

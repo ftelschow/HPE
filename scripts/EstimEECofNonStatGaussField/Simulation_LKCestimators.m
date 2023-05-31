@@ -31,7 +31,7 @@ addpath(genpath(path_main));
 
 %------ define parameters for this script
 %-- global parameters for the simulation
-method   = [0 0 1 0]; % [ "HPE" "bHPE" "warp" "worsley" ]; % LKC estimation method
+method   = [1 0 1 0]; % [ "HPE" "bHPE" "warp" "worsley" ]; % LKC estimation method
 Nvec     = [10 30 50 75 100 150 200];         % sample sizes
 Nsim     = 1e3;                               % number of simulations
 casNums  = [1 2]; % which cases for standardization ['theory' 'demeanvar1' 'var1' 'demean']
@@ -66,6 +66,13 @@ for type = TYPE
             outputname = strcat( type, '_D', num2str(D), 'T', num2str(T),...
                     '_params', num2str(nu));
         case "scale-space"
+            dataname   = strcat( path_data, '/RandomFields_', 'Ndata', num2str(Ndata),'_',...
+                     type, '_D', num2str(D), 'T', num2str(T),...
+                    '_params', num2str(gamma(1)),...
+                    '_', num2str(gamma(end)), '.mat' );
+            outputname = strcat( type, '_D', num2str(D), 'T', num2str(T),...
+                    '_params', num2str(gamma(1)), '_', num2str(gamma(end)));
+        case "ng_scale"
             dataname   = strcat( path_data, '/RandomFields_', 'Ndata', num2str(Ndata),'_',...
                      type, '_D', num2str(D), 'T', num2str(T),...
                     '_params', num2str(gamma(1)),...
@@ -142,7 +149,7 @@ if method(2) % This simulations runs in approximate 7 hours on a standard laptop
                         eps1 = eps(:,:,randsample(1:Ndata, N));
                     case 2 % experiment case, demean and standardize samp-variance to 1
                         eps1 = standardize(eps(:,:,randsample(1:Ndata, N)), 1, 1);
-                    cdcase 3 % variance known case, demean data
+                    case 3 % variance known case, demean data
                         eps1 = standardize(eps(:,:,randsample(1:Ndata, N)), 1, 0);
                     case 4 % mean known case, standardize samp-variance to 1
                         eps1 = standardize(eps(:,:,randsample(1:Ndata, N)), 0, 1);

@@ -17,7 +17,7 @@ D = length( dim );
 
 %%%% Check input %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if ~strcmp( TYPE, 'isotropic' ) && ~strcmp( TYPE, 'scale-space' )...
-        && ~strcmp( TYPE, 'nongauss' )
+        && ~strcmp( TYPE, 'nongauss') && ~strcmp( TYPE, 'ng_scale' )
     error( [ TYPE, ' not implemented' ] )
 end
 
@@ -41,12 +41,16 @@ if ~exist( 'params', 'var' ) && strcmp( TYPE, 'scale-space' )
     params = 4:.2:40;
 end
 
+if ~exist( 'params', 'var' ) && strcmp( TYPE, 'ng_scale' )
+    params = 4:.2:40;
+end
+
 %%%% main functions %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 h   = gaussFilter( params );
 pad = ceil( 4 * params );
 
 %%%% Generate fields
-if ~strcmp( TYPE, "scale-space" )
+if ~strcmp( TYPE, "scale-space" ) && ~strcmp( TYPE, "ng_scale" )
 switch D
     case 1
         % generate voxelwise noise
@@ -101,6 +105,23 @@ if D==2 && strcmp(TYPE, "scale-space")
     b = 5;
     % Generate fields
     whitenoise_large = randn(L + 2*b*params(end), n, nsim);
+    f = zeros(L, length(params), n, nsim);
+    for k = 1:length(params)
+        whitenoise = whitenoise_large((1+round(b*params(end)-b*params(k))):(L+round(b*params(end)+b*params(k))), :, :);
+        x = (-b*params(k):b*params(k))';
+        w = params(k)^(-1/2)*pi^(-1/4)*exp(-x.^ 2 / (2 * params(k)^2));
+        z_params = convn(whitenoise, w, 'valid');
+        f(:,k,:,:) = z_params;
+    end
+end
+
+if D==2 && strcmp(TYPE, "ng_scale")
+    L = 50;
+    b = 5;
+    % Generate fields
+    df = 3;
+    whitenoise_large = ( chi2rnd( df, [ L + 2*b*params(end), n, nsim ] ) - df )...
+                                        / sqrt( 2 * df );
     f = zeros(L, length(params), n, nsim);
     for k = 1:length(params)
         whitenoise = whitenoise_large((1+round(b*params(end)-b*params(k))):(L+round(b*params(end)+b*params(k))), :, :);

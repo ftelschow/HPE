@@ -492,6 +492,226 @@ for l = 1:2
 end
 
 
+%% visualize Simulation Results - Nonstationary -Gauss SquareExp
+nsim    = 1e3;
+nvec    = [10 20 50 75 100 150 200];
+D       = 2;
+
+outputname = strcat( 'nonstatgauss_exp_D', num2str(D), 'T21');;
+
+sim_identifier = strcat( 'maxN', num2str(max(nvec)), outputname );
+
+% files to be loaded
+load( strcat( path_results, '/simLKCherm_', sim_identifier,'.mat') )
+load( strcat( path_results, '/simLKCwarp','_',...
+             sim_identifier,'.mat') )
+%load( strcat( path_results, '/simLKChermB_', sim_identifier,'.mat') )
+load( strcat( path_results, '/simLKCiso_', sim_identifier,'.mat') )
+
+% names for output graphics
+outname = [ ...
+            strcat(sim_identifier,"_LKCestim_Theory",".png");...
+            strcat(sim_identifier,"_LKCestim_DemeanVar1",".png");...
+            strcat(sim_identifier,"_LKCestim_Var1",".png");...
+            strcat(sim_identifier,"_LKCestim_Demean",".png");...
+            ];
+
+% Global figure settings
+trueLKC    = L(1:2);
+WidthFig   = 1300;
+HeightFig  = WidthFig * scale;
+xvec       = (1:7)*15;% nvec;
+xtickcell  = {'10', '30', '50', '75', '100', '150', '200'};
+yvec1      = 10:15;
+ytickcell1 = {'10' '11' '12' '13' '14' '15'};
+yvec2      = [30 35 40 45 50];
+ytickcell2 = {'30' '35' '40' '45' '50'};
+
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
+set(groot, 'defaultLegendInterpreter','latex');
+
+
+for l = 1:2
+%%%
+    outputname = outname(l);
+    figure(l), clf, hold on;
+    % Define size and location of the figure [xPos yPos WidthFig HeightFig]
+    set(gcf, 'Position', [ 300 300 WidthFig HeightFig]);
+    set(gcf,'PaperPosition', [ 300 300 WidthFig HeightFig])
+
+    % LKC plot
+    for i = [1 2]
+            % generate subplot
+            subplot(1,2,i), hold on;
+            % Plot herm estimator
+            ErrorBar = errorbar(xvec-4, LKCherm.hatmean(i,:,l), LKCherm.hatstd(i,:,l), 'o'); hold on;
+            set(ErrorBar,'Color',colMat(1,:),'LineWidth',2)
+%            % Plot herm bootstrap estimator
+%            ErrorBar = errorbar(xvec-2, LKChermB.hatmean(i,:,l) ,LKChermB.hatstd(i,:,l), 'o'); hold on ;
+%            set(ErrorBar,'Color',colMat(2,:),'LineWidth',2)
+            % Plot warping estimator
+            ErrorBar = errorbar(xvec, LKCwarp.hatmean(i,:,l), LKCwarp.hatstd(i,:,l), 'o'); hold on ;
+            set(ErrorBar,'Color',colMat(3,:),'LineWidth',2)
+            % Plot Worsleys isotropic estimator
+                ErrorBar = errorbar(xvec+2, LKCiso.hatmean(i,:,l) ,LKCiso.hatstd(i,:,l), 'o'); hold on ;
+                set(ErrorBar,'Color',colMat(4,:),'LineWidth',2)
+            
+            % Plot the true value
+            plot([xvec(1)-10 xvec(end)+10],[trueLKC(i) trueLKC(i)],'k', 'LineWidth', 2 ), hold on
+
+
+            % Modify gloabal font size for this plot
+            set(gca,'FontSize', sfont)
+
+            % Change axis style
+            xlim([xvec(1)-10 xvec(end)+10])
+            xticks(xvec)
+            xticklabels(xtickcell)
+
+            h = xlabel('Sample Size [{\it N}]', 'fontsize', sfont+addf); set(h, 'Interpreter', 'latex');
+            if i==1
+                ylim([yvec1(1) yvec1(end)]);
+                yticks(yvec1);
+                yticklabels(ytickcell1);
+                h = ylabel('$\mathcal{L}_1$', 'fontsize', sfont+addf); set(h, 'Interpreter', 'latex');
+            else
+                ylim([yvec2(1) yvec2(end)]);
+                yticks(yvec2);
+                yticklabels(ytickcell2);
+                h = ylabel('$\mathcal{L}_2$', 'fontsize', sfont+addf); set(h, 'Interpreter', 'latex');
+            end
+            
+            if(i==1)
+                if l==1
+                    legend( 'HPE', 'WarpE', 'IsotE',...%'HPE', 'bHPE', 'WarpE', 'IsotE',...
+                            'Location', 'southeast' );
+                    set(legend, 'fontsize', sfont);
+                                    legend boxoff
+                    set(legend,'color','none')
+                end
+                X = [0.375 0.375];
+                Y = [0.33   0.22];
+            end
+     end
+     set(gcf,'papersize',[12 12*scale])
+     fig = gcf;
+     fig.PaperPositionMode = 'auto';
+     fig_pos = fig.PaperPosition;
+     fig.PaperSize = [fig_pos(3) fig_pos(4)];
+     print(strcat(path_pics,outputname), '-dpng')
+    hold off;
+end
+
+%% visualize Simulation Results - Nonstationary -Gauss SquareExp
+nsim    = 1e3;
+nvec    = [10 20 50 75 100 150 200];
+D       = 2;
+
+outputname = strcat( 'nonstatnongauss_exp_D', num2str(D), 'T21');;
+
+sim_identifier = strcat( 'maxN', num2str(max(nvec)), outputname );
+
+% files to be loaded
+load( strcat( path_results, '/simLKCherm_', sim_identifier,'.mat') )
+load( strcat( path_results, '/simLKCwarp','_',...
+             sim_identifier,'.mat') )
+load( strcat( path_results, '/simLKChermB_', sim_identifier,'.mat') )
+load( strcat( path_results, '/simLKCiso_', sim_identifier,'.mat') )
+
+% names for output graphics
+outname = [ ...
+            strcat(sim_identifier,"_LKCestim_Theory",".png");...
+            strcat(sim_identifier,"_LKCestim_DemeanVar1",".png");...
+            strcat(sim_identifier,"_LKCestim_Var1",".png");...
+            strcat(sim_identifier,"_LKCestim_Demean",".png");...
+            ];
+
+% Global figure settings
+trueLKC    = L(1:2);
+WidthFig   = 1300;
+HeightFig  = WidthFig * scale;
+xvec       = (1:7)*15;% nvec;
+xtickcell  = {'10', '30', '50', '75', '100', '150', '200'};
+yvec1      = 8:16;
+ytickcell1 = {'8' '9' '10' '11' '12' '13' '14' '15' '16'};
+yvec2      = [30 35 40 45 50];
+ytickcell2 = {'30' '35' '40' '45' '50'};
+
+set(groot, 'defaultAxesTickLabelInterpreter','latex');
+set(groot, 'defaultLegendInterpreter','latex');
+
+
+for l = 1:2
+%%%
+    outputname = outname(l);
+    figure(l), clf, hold on;
+    % Define size and location of the figure [xPos yPos WidthFig HeightFig]
+    set(gcf, 'Position', [ 300 300 WidthFig HeightFig]);
+    set(gcf,'PaperPosition', [ 300 300 WidthFig HeightFig])
+
+    % LKC plot
+    for i = [1 2]
+            % generate subplot
+            subplot(1,2,i), hold on;
+            % Plot herm estimator
+            ErrorBar = errorbar(xvec-4, LKCherm.hatmean(i,:,l), LKCherm.hatstd(i,:,l), 'o'); hold on;
+            set(ErrorBar,'Color',colMat(1,:),'LineWidth',2)
+            % Plot herm bootstrap estimator
+            ErrorBar = errorbar(xvec-2, LKChermB.hatmean(i,:,l) ,LKChermB.hatstd(i,:,l), 'o'); hold on ;
+            set(ErrorBar,'Color',colMat(2,:),'LineWidth',2)
+            % Plot warping estimator
+            ErrorBar = errorbar(xvec, LKCwarp.hatmean(i,:,l), LKCwarp.hatstd(i,:,l), 'o'); hold on ;
+            set(ErrorBar,'Color',colMat(3,:),'LineWidth',2)
+            % Plot Worsleys isotropic estimator
+                ErrorBar = errorbar(xvec+2, LKCiso.hatmean(i,:,l) ,LKCiso.hatstd(i,:,l), 'o'); hold on ;
+                set(ErrorBar,'Color',colMat(4,:),'LineWidth',2)
+            
+            % Plot the true value
+            plot([xvec(1)-10 xvec(end)+10],[trueLKC(i) trueLKC(i)],'k', 'LineWidth', 2 ), hold on
+
+
+            % Modify gloabal font size for this plot
+            set(gca,'FontSize', sfont)
+
+            % Change axis style
+            xlim([xvec(1)-10 xvec(end)+10])
+            xticks(xvec)
+            xticklabels(xtickcell)
+
+            h = xlabel('Sample Size [{\it N}]', 'fontsize', sfont+addf); set(h, 'Interpreter', 'latex');
+            if i==1
+                ylim([yvec1(1) yvec1(end)]);
+                yticks(yvec1);
+                yticklabels(ytickcell1);
+                h = ylabel('$\mathcal{L}_1$', 'fontsize', sfont+addf); set(h, 'Interpreter', 'latex');
+            else
+                ylim([yvec2(1) yvec2(end)]);
+                yticks(yvec2);
+                yticklabels(ytickcell2);
+                h = ylabel('$\mathcal{L}_2$', 'fontsize', sfont+addf); set(h, 'Interpreter', 'latex');
+            end
+            
+            if(i==1)
+                if l==1
+                    legend( 'HPE', 'bHPE', 'WarpE', 'IsotE',...
+                            'Location', 'southeast' );
+                    set(legend, 'fontsize', sfont);
+                                    legend boxoff
+                    set(legend,'color','none')
+                end
+                X = [0.375 0.375];
+                Y = [0.33   0.22];
+            end
+     end
+     set(gcf,'papersize',[12 12*scale])
+     fig = gcf;
+     fig.PaperPositionMode = 'auto';
+     fig_pos = fig.PaperPosition;
+     fig.PaperSize = [fig_pos(3) fig_pos(4)];
+     print(strcat(path_pics,outputname), '-dpng')
+    hold off;
+end
+
 %% visualize Simulation Results - Dependence of Smoothness
 nvec    = [10 20 50 75 100];
 T       = 50;

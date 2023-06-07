@@ -31,7 +31,7 @@ addpath(genpath(path_main));
 
 %------ define parameters for this script
 %-- global parameters for the simulation
-method   = [1 0 1 0]; % [ "HPE" "bHPE" "warp" "worsley" ]; % LKC estimation method
+method   = [0 1 0 0]; % [ "HPE" "bHPE" "warp" "worsley" ]; % LKC estimation method
 Nvec     = [10 30 50 75 100 150 200];         % sample sizes
 Nsim     = 1e3;                               % number of simulations
 casNums  = [1 2]; % which cases for standardization ['theory' 'demeanvar1' 'var1' 'demean']
@@ -42,6 +42,8 @@ Mboot    = 5e3; % number of bootstrap replicates
 
 %-- load parameters from simulated fields
 load(strcat(path_data,'/RandomFields_params.mat'))
+
+TYPE =  "nonstatgauss_exp"; %["nonstatnongauss_exp", "nonstatgauss_exp"];
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %--------------------------------------------------------------------------
@@ -85,6 +87,16 @@ for type = TYPE
                     '_params', num2str(nu), '.mat' );
             outputname = strcat( type, '_D', num2str(D), 'T', num2str(T),...
                     '_params', num2str(nu));
+        case "nonstatnongauss_exp"
+            dataname   = strcat( path_data, 'RandomFields_', 'Ndata', num2str(Ndata),'_',...
+                     type, '_D', num2str(D), 'T21', '.mat' );
+            outputname = strcat( type, '_D', num2str(D), 'T21');
+            T = 43;
+        case "nonstatgauss_exp"
+            dataname   = strcat( path_data, 'RandomFields_', 'Ndata', num2str(Ndata),'_',...
+                     type, '_D', num2str(D), 'T21', '.mat' );
+            outputname = strcat( type, '_D', num2str(D), 'T21');
+            T = 43;
     end
     
     % load precomputed data

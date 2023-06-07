@@ -79,3 +79,106 @@ outputname = strcat( path_data, 'RandomFields_', 'Ndata', num2str(Ndata),'_',...
 [eps, L] = generateField( Ndata, 1, T*ones([1 D]), type, gamma );
 save(outputname, 'eps', 'L','-v7.3')
 toc
+
+%%
+%-- non-stat-Gauß expsquare
+%
+addpath(genpath("/home/fabian/Seafile/Code/matlabToolboxes/RFTtoolbox"))
+
+D      = 2;
+T      = 21;
+Dim    = [T,T];
+pars   = [[2.5, 0.05]; [2.5, -0.05]];
+
+type = "nonstatgauss_exp";
+outputname = strcat( path_data, 'RandomFields_', 'Ndata', num2str(Ndata),'_',...
+                     type, '_D', num2str(D), 'T', num2str(T), '.mat' );
+
+resadd = 1;
+dx = 1/(resadd + 1);
+xx = -10:10;
+
+pad     = 20;
+mask    = true( Dim );
+mask    = logical( pad_vals( mask, pad ) );
+mask_hr = mask_highres(mask, resadd);
+x       = (-(10+pad)-dx):dx:((10+pad)+dx);
+[X,Y]   = meshgrid(x, x);
+
+
+data = wfield( mask_hr, Ndata);
+
+%[min(pars(1,1) * exp(pars(1,2) * xx)), max(pars(1,1) * exp(pars(1,2) * xx))] 
+%[min(pars(2,1) * exp(pars(2,2) * xx)), max(pars(2,1) * exp(pars(2,2) * xx))] 
+
+val1 = exp( -(x - Y).^2 ./ (sqrt(2) * pars(1,1) * exp(pars(1,2) * x)).^2) * dx;
+val2 = exp( -(x - Y).^2 ./ (sqrt(2) * pars(2,1) * exp(pars(2,2) * x)).^2) * dx;
+
+sd_val = sqrt(pi) ./ sqrt( (pars(2,1) * pars(1,1)) * (exp(pars(1,2) * X)  .* exp(pars(2,2) * Y) )) * pi;
+
+tic
+for k = 1:data.fibersize
+    data.field(:,:,k) = val1' * data.field(:,:,k) * val2 ./ sd_val;
+end
+ende = length(data.xvals{1});
+
+data = data((pad + pad*resadd+1):(ende-((pad + pad*resadd))), (pad + pad*resadd+1):(ende-((pad + pad*resadd))),:);
+data = data./std(data);
+eps  = data.field;
+L = [12.53, 39.25];
+
+save(outputname, 'eps', 'L','-v7.3')
+toc
+
+
+%%
+%-- non-stat-non-Gauß expsquare
+%
+addpath(genpath("/home/fabian/Seafile/Code/matlabToolboxes/RFTtoolbox"))
+
+D      = 2;
+T      = 21;
+Dim    = [T,T];
+pars   = [[2.5, 0.05]; [2.5, -0.05]];
+
+type = "nonstatnongauss_exp";
+outputname = strcat( path_data, 'RandomFields_', 'Ndata', num2str(Ndata),'_',...
+                     type, '_D', num2str(D), 'T', num2str(T), '.mat' );
+
+
+Nsubj  = 100;
+resadd = 1;
+dx = 1/(resadd + 1);
+xx = -10:10;
+
+pad = 20;
+mask    = true( Dim );
+mask    = logical( pad_vals( mask, pad ) );
+mask_hr = mask_highres(mask, resadd);
+x       = (-(10+pad)-dx):dx:((10+pad)+dx);
+[X,Y]   = meshgrid(x, x);
+
+
+data = wfield( mask_hr, Ndata, 'T', 3);
+
+%[min(pars(1,1) * exp(pars(1,2) * xx)), max(pars(1,1) * exp(pars(1,2) * xx))] 
+%[min(pars(2,1) * exp(pars(2,2) * xx)), max(pars(2,1) * exp(pars(2,2) * xx))] 
+
+val1 = exp( -(x - Y).^2 ./ (sqrt(2) * pars(1,1) * exp(pars(1,2) * x)).^2) * dx;
+val2 = exp( -(x - Y).^2 ./ (sqrt(2) * pars(2,1) * exp(pars(2,2) * x)).^2) * dx;
+
+sd_val = sqrt(pi) ./ sqrt( (pars(2,1) * pars(1,1)) * (exp(pars(1,2) * X)  .* exp(pars(2,2) * Y) )) * pi;
+
+tic
+for k = 1:data.fibersize
+    data.field(:,:,k) = val1' * data.field(:,:,k) * val2 ./ sd_val;
+end
+ende = length(data.xvals{1});
+
+data = data((pad + pad*resadd+1):(ende-((pad + pad*resadd))), (pad + pad*resadd+1):(ende-((pad + pad*resadd))),:);
+data = data./std(data);
+eps  = data.field;
+L = [12.53, 39.25];
+
+save(outputname, 'eps', 'L','-v7.3')
+toc

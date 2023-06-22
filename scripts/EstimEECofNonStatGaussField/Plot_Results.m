@@ -142,6 +142,7 @@ for l = 1:2
                 set(legend, 'fontsize', sfont);
                 legend boxoff
                 %set(legend,'color','none')
+                lgd.NumColumns = 4;
             end
      end
 %    saveas( gcf,strcat('pics/',outputname) )
@@ -505,7 +506,7 @@ sim_identifier = strcat( 'maxN', num2str(max(nvec)), outputname );
 load( strcat( path_results, '/simLKCherm_', sim_identifier,'.mat') )
 load( strcat( path_results, '/simLKCwarp','_',...
              sim_identifier,'.mat') )
-%load( strcat( path_results, '/simLKChermB_', sim_identifier,'.mat') )
+load( strcat( path_results, '/simLKChermB_', sim_identifier,'.mat') )
 load( strcat( path_results, '/simLKCiso_', sim_identifier,'.mat') )
 
 % names for output graphics
@@ -522,8 +523,8 @@ WidthFig   = 1300;
 HeightFig  = WidthFig * scale;
 xvec       = (1:7)*15;% nvec;
 xtickcell  = {'10', '30', '50', '75', '100', '150', '200'};
-yvec1      = 10:15;
-ytickcell1 = {'10' '11' '12' '13' '14' '15'};
+yvec1      = 8:16;
+ytickcell1 = {'8' '9' '10' '11' '12' '13' '14' '15' '16'};
 yvec2      = [30 35 40 45 50];
 ytickcell2 = {'30' '35' '40' '45' '50'};
 
@@ -546,9 +547,9 @@ for l = 1:2
             % Plot herm estimator
             ErrorBar = errorbar(xvec-4, LKCherm.hatmean(i,:,l), LKCherm.hatstd(i,:,l), 'o'); hold on;
             set(ErrorBar,'Color',colMat(1,:),'LineWidth',2)
-%            % Plot herm bootstrap estimator
-%            ErrorBar = errorbar(xvec-2, LKChermB.hatmean(i,:,l) ,LKChermB.hatstd(i,:,l), 'o'); hold on ;
-%            set(ErrorBar,'Color',colMat(2,:),'LineWidth',2)
+           % Plot herm bootstrap estimator
+           ErrorBar = errorbar(xvec-2, LKChermB.hatmean(i,:,l) ,LKChermB.hatstd(i,:,l), 'o'); hold on ;
+           set(ErrorBar,'Color',colMat(2,:),'LineWidth',2)
             % Plot warping estimator
             ErrorBar = errorbar(xvec, LKCwarp.hatmean(i,:,l), LKCwarp.hatstd(i,:,l), 'o'); hold on ;
             set(ErrorBar,'Color',colMat(3,:),'LineWidth',2)
@@ -583,7 +584,7 @@ for l = 1:2
             
             if(i==1)
                 if l==1
-                    legend( 'HPE', 'WarpE', 'IsotE',...%'HPE', 'bHPE', 'WarpE', 'IsotE',...
+                    legend( 'HPE', 'bHPE', 'WarpE', 'IsotE',...
                             'Location', 'southeast' );
                     set(legend, 'fontsize', sfont);
                                     legend boxoff

@@ -17,7 +17,7 @@ close all
 load('paths.mat')
 
 % create matlab paths to search for functions
-addpath(genpath('/home/drtea/matlabToolboxes/HPE'));
+addpath(genpath(path_main));
 
 
 
@@ -189,8 +189,8 @@ WidthFig   = 1300;
 HeightFig  = WidthFig * scale;
 xvec       = (1:7)*15;% nvec;
 xtickcell  = {'10', '30', '50', '75', '100', '150', '200'};
-yvec1      = [5.5 6 6.5 7 7.5, 8];
-ytickcell1 = {'5.5' '6' '6.5' '7' '7.5', '8'};
+yvec1      = [5.5 6 6.5 7 7.5];
+ytickcell1 = {'5.5' '6' '6.5' '7' '7.5'};
 yvec2      = [1 2 3 4 5 6 7 8];
 ytickcell2 = {'1' '2' '3' '4' '5' '6' '7' '8'};
 
@@ -254,7 +254,7 @@ for l = 1:2
                             'Location', 'northeast' );
                     set(legend, 'fontsize', sfont);
                                     legend boxoff
-                    set(legend,'color','none')
+                    set(legend,'color','none', 'NumColumns',2 )
                 end
                 X = [0.375 0.375];
                 Y = [0.33   0.22];
@@ -304,9 +304,10 @@ HeightFig  = WidthFig * scale;
 xvec       = (1:7)*15;
 xtickcell  = {'10', '30', '50', '75', '100', '150', '200'};
 yvec1      = [12 13 14 15 16];
-yvec2      = [35 40 45 50 55];
+yvec2      = [40 45 50 55];
+ylim2      = [37.5, 57.5]; 
 ytickcell1 = {'12' '13' '14' '15' '16'};
-ytickcell2 = {'35' '40' '45' '50' '55' '57.5'};
+ytickcell2 = {'40' '45' '50' '55'};
 
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
 set(groot, 'defaultLegendInterpreter','latex');
@@ -355,7 +356,7 @@ for l = 1:2
                 yticklabels(ytickcell1);
                 h = ylabel('$\mathcal{L}_1$', 'fontsize', sfont+addf); set(h, 'Interpreter', 'latex');
             else
-                ylim([yvec2(1)-1 yvec2(end)+2]);
+                ylim(ylim2);
                 yticks(yvec2);
                 yticklabels(ytickcell2);
                 h = ylabel('$\mathcal{L}_2$', 'fontsize', sfont+addf); set(h, 'Interpreter', 'latex');
@@ -365,7 +366,7 @@ for l = 1:2
             if i==2 && l==1
                legend( 'HPE', 'bHPE', 'WarpE', 'IsotE',...
                             'Location', 'southeast' );
-                set(legend, 'fontsize', sfont);
+                set(legend, 'fontsize', sfont, 'NumColumns',2);
                 legend boxoff
             end
      end
@@ -412,9 +413,9 @@ WidthFig   = 1300;
 HeightFig  = WidthFig * scale;
 xvec       = (1:7)*15;% nvec;
 xtickcell  = {'10', '30', '50', '75', '100', '150', '200'};
-yvec1      = [5.5 6 6.5 7 7.5, 8];
+yvec1      = [5.5 6 6.5 7 7.5];
 ytickcell1 = {'5.5' '6' '6.5' '7' '7.5', '8'};
-yvec2      = [1 2 3 4 5 6 7 8];
+yvec2      = [1 2 3 4 5 6 7];
 ytickcell2 = {'1' '2' '3' '4' '5' '6' '7' '8'};
 
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
@@ -477,7 +478,7 @@ for l = 1:2
                             'Location', 'northeast' );
                     set(legend, 'fontsize', sfont);
                                     legend boxoff
-                    set(legend,'color','none')
+                    set(legend,'color','none', 'NumColumns', 3)
                 end
                 X = [0.375 0.375];
                 Y = [0.33   0.22];
@@ -493,12 +494,12 @@ for l = 1:2
 end
 
 
-%% visualize Simulation Results - Nonstationary -Gauss SquareExp
+%% visualize Simulation Results - Nonstationary Gauss SquareExp
 nsim    = 1e3;
 nvec    = [10 20 50 75 100 150 200];
 D       = 2;
 
-outputname = strcat( 'nonstatgauss_exp_D', num2str(D), 'T21');;
+outputname = strcat( 'nonstatgauss_exp_D', num2str(D), 'T21');
 
 sim_identifier = strcat( 'maxN', num2str(max(nvec)), outputname );
 
@@ -523,8 +524,8 @@ WidthFig   = 1300;
 HeightFig  = WidthFig * scale;
 xvec       = (1:7)*15;% nvec;
 xtickcell  = {'10', '30', '50', '75', '100', '150', '200'};
-yvec1      = 8:16;
-ytickcell1 = {'8' '9' '10' '11' '12' '13' '14' '15' '16'};
+yvec1      = 10:15;
+ytickcell1 = {'10' '11' '12' '13' '14' '15'};
 yvec2      = [30 35 40 45 50];
 ytickcell2 = {'30' '35' '40' '45' '50'};
 
@@ -586,9 +587,9 @@ for l = 1:2
                 if l==1
                     legend( 'HPE', 'bHPE', 'WarpE', 'IsotE',...
                             'Location', 'southeast' );
-                    set(legend, 'fontsize', sfont);
+                    set(legend, 'fontsize', sfont-2);
                                     legend boxoff
-                    set(legend,'color','none')
+                    set(legend,'color','none', 'NumColumns',2)
                 end
                 X = [0.375 0.375];
                 Y = [0.33   0.22];
@@ -603,7 +604,7 @@ for l = 1:2
     hold off;
 end
 
-%% visualize Simulation Results - Nonstationary -Gauss SquareExp
+%% visualize Simulation Results - Nonstationary NonGauss SquareExp
 nsim    = 1e3;
 nvec    = [10 20 50 75 100 150 200];
 D       = 2;
@@ -633,8 +634,8 @@ WidthFig   = 1300;
 HeightFig  = WidthFig * scale;
 xvec       = (1:7)*15;% nvec;
 xtickcell  = {'10', '30', '50', '75', '100', '150', '200'};
-yvec1      = 8:16;
-ytickcell1 = {'8' '9' '10' '11' '12' '13' '14' '15' '16'};
+yvec1      = 10:15;
+ytickcell1 = {'10' '11' '12' '13' '14' '15'};
 yvec2      = [30 35 40 45 50];
 ytickcell2 = {'30' '35' '40' '45' '50'};
 
@@ -698,7 +699,7 @@ for l = 1:2
                             'Location', 'southeast' );
                     set(legend, 'fontsize', sfont);
                                     legend boxoff
-                    set(legend,'color','none')
+                    set(legend,'color','none', 'NumColumns',2)
                 end
                 X = [0.375 0.375];
                 Y = [0.33   0.22];

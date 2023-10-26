@@ -17,7 +17,7 @@ close all
 load('paths.mat')
 
 % create matlab paths to search for functions
-addpath(genpath('/home/drtea/matlabToolboxes/HPE'));
+addpath(genpath(path_main));
 
 % standard color schemes 'https://personal.sron.nl/~pault/'
 BrightCol  = [[68 119 170];...    % blue
@@ -88,7 +88,7 @@ set(groot, 'defaultLegendInterpreter','latex');
 %% Dependence on multipliers in the bootstrap
 
 % files to be loaded
-load( strcat( path_results, '/simLKChermBm_', sim_identifier,'.mat') )
+load( strcat( path_results, '/simLKChermB_', sim_identifier,'.mat') )
 % Global figure settings
 trueLKC    = L(1:2);
 
@@ -160,7 +160,7 @@ for l = 1:2
             if i==1 && l==2
                legend( 'Gaussian', 'Multinomial', 'mod. Multinomial', 'Rademacher',...
                             'Location', 'northeast' );
-                set(legend, 'fontsize', sfont);
+                set(legend, 'fontsize', sfont-2, 'NumColumns',2);
                 legend boxoff
                 %set(legend,'color','none')
             end

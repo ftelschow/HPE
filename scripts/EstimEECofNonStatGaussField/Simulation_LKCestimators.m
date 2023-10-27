@@ -43,7 +43,7 @@ Mboot    = 5e3; % number of bootstrap replicates
 %-- load parameters from simulated fields
 load(strcat(path_data,'/RandomFields_params.mat'))
 
-TYPE =  "nonstatgauss_exp"; %["nonstatnongauss_exp", "nonstatgauss_exp"];
+TYPE = "isotropic" %  "nonstatgauss_exp"; %["nonstatnongauss_exp", "nonstatgauss_exp"];
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %--------------------------------------------------------------------------

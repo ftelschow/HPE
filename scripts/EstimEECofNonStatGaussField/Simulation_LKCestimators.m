@@ -43,7 +43,7 @@ Mboot    = 5e3; % number of bootstrap replicates
 %-- load parameters from simulated fields
 load(strcat(path_data,'/RandomFields_params.mat'))
 
-TYPE = "isotropic" %  "nonstatgauss_exp"; %["nonstatnongauss_exp", "nonstatgauss_exp"];
+TYPE = "isotropic"; %  "nonstatgauss_exp"; %["nonstatnongauss_exp", "nonstatgauss_exp"];
 
 %% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %--------------------------------------------------------------------------
@@ -134,7 +134,7 @@ if method(1) % This simulations run in under 10 minutes
         LKCherm.hatmean(:,i,:) = mean( LKCherm.hatn(:,:,i,:), 2 );
         LKCherm.hatstd(:,i,:)  = std( LKCherm.hatn(:,:,i,:), 0, 2 );
         %%%% save results
-        save( strcat( path_results,'/simLKCherm_maxN', num2str(max(Nvec)),...
+        save( strcat( path_results,'simLKCherm_maxN', num2str(max(Nvec)),...
                       outputname), 'dataname', 'LKCherm', 'L', 'Nvec' )
 
         toc
@@ -176,7 +176,7 @@ if method(2) % This simulations runs in approximate 7 hours on a standard laptop
         LKChermB.hatmean(:,i,:) = mean( LKChermB.hatn(:,:,i,:), 2 );
         LKChermB.hatstd(:,i,:)  = std( LKChermB.hatn(:,:,i,:), 0, 2 );
         %%%% save results
-        save( strcat( path_results,'/simLKChermB_maxN', num2str(max(Nvec)),...
+        save( strcat( path_results,'simLKChermB_maxN', num2str(max(Nvec)),...
                       outputname), 'dataname', 'LKChermB', 'L', 'Nvec' )
 
         toc
@@ -225,7 +225,7 @@ if method(3) % This simulations run in a couple of minutes
             LKCwarp.hatstd(:,i,cont_cas)  = std( LKCwarp.hatn(:,:,i,cont_cas), 0, 2 );
         end
         %%%% save results
-        save( strcat( path_results,'/simLKCwarp_maxN', num2str(max(Nvec)),...
+        save( strcat( path_results,'simLKCwarp_maxN', num2str(max(Nvec)),...
                       outputname), 'dataname', 'LKCwarp', 'L', 'Nvec' )
 
         toc
@@ -284,7 +284,7 @@ if method(4) % This simulations run in a couple of minutes
     end
 
         %%%% save results
-        save( strcat( path_results,'/simLKCiso_maxN', num2str(max(Nvec)),...
+        save( strcat( path_results,'simLKCiso_maxN', num2str(max(Nvec)),...
                       outputname), 'dataname', 'LKCiso', 'L', 'Nvec' )
 
     clear eps1 con_cas N i
@@ -364,7 +364,7 @@ for nbatch = 1:2
 
             % Estimate the LKC
             tmp  = LKCestim_HermProjExact( squeeze(f(:,:,1:N,:)), 2, -666, 1,...
-                                           [-1 1], 1, "Gaussian", 4, "C");
+                                           1, "Gaussian", 4, "C");
             LKCherm.hatn(:,:,i,nu_i)  = tmp.hatn;
             LKCherm.hatmean(:,i,nu_i) = mean( LKCherm.hatn(:,:,i,nu_i), 2 );
             LKCherm.hatstd(:,i,nu_i)  = std( LKCherm.hatn(:,:,i,nu_i), 0, 2 );

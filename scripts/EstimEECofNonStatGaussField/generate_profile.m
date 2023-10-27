@@ -18,9 +18,9 @@ close all
 
 %------ change accordingly to your local folder structure
 % path to git repository HPE
-path_main = '/home/fabian/Seafile/Code/matlabToolboxes/HPE/';
+path_main = '~/MatlabToolboxes/HPE/';
 % path to spm12 toolbox
-path_spm12 = '/home/fabian/Seafile/Code/matlabToolboxes/spm12/';
+path_spm12 = '~/MatlabToolboxes/spm12/';
 
 %------ derived paths and save them
 path_pics = strcat( path_main, 'pics/EstimEECofNonStatGaussField/' );

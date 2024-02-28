@@ -75,9 +75,9 @@ WidthFig   = 1300;
 HeightFig  = WidthFig * scale;
 xvec       = (1:7) *15; %nvec;
 xtickcell  = {'10', '30', '50', '75', '100', '150', '200'};
-yvec1      = [12 13 14 15 16];
+yvec1      = [12 13 14 15];
 yvec2      = [40 45 50 55];
-ytickcell1 = {'12' '13' '14' '15' '16'};
+ytickcell1 = {'12' '13' '14' '15'};
 ytickcell2 = {'40' '45' '50' '55'};
 
 set(groot, 'defaultAxesTickLabelInterpreter','latex');
@@ -139,7 +139,7 @@ for l = 1:2
             if i==1 && l==1
                legend( 'HPE', 'bHPE', 'WarpE', 'IsotE',...
                             'Location', 'northeast' );
-                set(legend, 'fontsize', sfont);
+                set(legend, 'fontsize', sfont-2, 'NumColumns',2);
                 legend boxoff
                 %set(legend,'color','none')
                 lgd.NumColumns = 4;
@@ -252,7 +252,7 @@ for l = 1:2
                 if l==1
                     legend( 'HPE', 'bHPE', 'WarpE','IsotE',...
                             'Location', 'northeast' );
-                    set(legend, 'fontsize', sfont);
+                    set(legend, 'fontsize', sfont-2);
                                     legend boxoff
                     set(legend,'color','none', 'NumColumns',2 )
                 end
@@ -366,7 +366,7 @@ for l = 1:2
             if i==2 && l==1
                legend( 'HPE', 'bHPE', 'WarpE', 'IsotE',...
                             'Location', 'southeast' );
-                set(legend, 'fontsize', sfont, 'NumColumns',2);
+                set(legend, 'fontsize', sfont-2, 'NumColumns',2);
                 legend boxoff
             end
      end
@@ -476,7 +476,7 @@ for l = 1:2
                 if l==1
                     legend( 'HPE', 'bHPE', 'WarpE',...
                             'Location', 'northeast' );
-                    set(legend, 'fontsize', sfont);
+                    set(legend, 'fontsize', sfont-2);
                                     legend boxoff
                     set(legend,'color','none', 'NumColumns', 3)
                 end
@@ -697,7 +697,7 @@ for l = 1:2
                 if l==1
                     legend( 'HPE', 'bHPE', 'WarpE', 'IsotE',...
                             'Location', 'southeast' );
-                    set(legend, 'fontsize', sfont);
+                    set(legend, 'fontsize', sfont-2);
                                     legend boxoff
                     set(legend,'color','none', 'NumColumns',2)
                 end
@@ -843,7 +843,7 @@ for l = [1]
                                 'Location', 'northeast' );
                     end
                 end
-                set(legend, 'fontsize', sfont);
+                set(legend, 'fontsize', sfont-2);
                 set(legend,'color','none')
             end
     end

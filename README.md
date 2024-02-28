@@ -19,8 +19,12 @@ https://arxiv.org/abs/1908.02493.
 
 ## Introduction <a name="introduction"></a>
 This git-repository implements and aims to reproduce the
-simulation results and data analysis from "Estimation of Expected Euler
-Characteristic Curves of Nonstationary Smooth Gaussian Random Fields" (Telschow et al)
+simulation results and data analysis from
+
+Telschow, Fabian JE, et al.
+"Estimation of expected Euler characteristic curves of nonstationary smooth random fields."
+The Annals of Statistics 51.5 (2023): 2272-2297.
+
 using Matlab. Moreover, it will also host simulations for an upcoming NeuoImage article
 analyzing the LKC estimators in 3D.mex EulerCharCrit_c.cpp
 

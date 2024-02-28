@@ -2,7 +2,7 @@
 This repository implements the bootstrapped Hermite Projection estimator
 and other estimators for Lipschitz Killing curvatures of random fields.
 Moreover, it reproduces the simulation results and data analysis from
-https://arxiv.org/abs/1908.02493.
+DOI:10.1214/23-AOS2337.
 
 ## Table of contents
 * [Introduction](#introduction)
